@@ -187,16 +187,6 @@ Configuration in `turbo.json`:
 - `type-check` - Depends on `^type-check`
 - `clean` - No caching
 
-## Environment Setup
-
-Create `.env` file in `apps/api/`:
-
-```env
-MONGODB_URI=mongodb://localhost:27017/mindscribe
-OLLAMA_BASE_URL=http://localhost:11434
-OLLAMA_MODEL=mistral
-```
-
 ## Future Extensibility
 
 The structure is designed to support growth:
