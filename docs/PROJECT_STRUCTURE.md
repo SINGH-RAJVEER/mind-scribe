@@ -14,12 +14,12 @@ src/
 │   └── auth.ts            # JWT authentication
 ├── routes/                # API endpoints
 │   ├── auth.ts            # Authentication endpoints
-│   └── chat.ts            # Chat endpoints
+│   └── chat.ts            # Chat endpoints with streaming
 ├── services/              # Business logic layer
 │   └── database.ts        # Database queries & operations
 ├── controllers/           # Request handlers (extensible)
 └── utils/                 # Utility functions
-    └── ollamaManager.ts   # LLM integration
+    └── litellmManager.ts  # LLM integration with streaming
 ```
 
 ### Frontend Application (`apps/web/src/`)
@@ -82,14 +82,17 @@ src/
 All collections now have strategic indexes for optimal query performance:
 
 **User Collection:**
+
 - Index on `username` for user lookup
 - Index on `email` for email-based queries
 
 **Conversation Collection:**
+
 - Index on `user_id` for conversation listing
 - Compound index on `(_id, user_id)` for user-specific lookups
 
 **Message Collection:**
+
 - Index on `user_id` for user's all messages
 - Index on `conversation_id` for conversation messages
 - Compound index on `(user_id, conversation_id)` for specific queries
@@ -99,6 +102,7 @@ All collections now have strategic indexes for optimal query performance:
 ### React Compiler
 
 The React Compiler is enabled via Babel plugin in Vite configuration:
+
 - Automatically memoizes components and variables
 - Reduces unnecessary re-renders
 - Optimizes component output
@@ -108,6 +112,7 @@ The React Compiler is enabled via Babel plugin in Vite configuration:
 #### Biome Linter & Formatter
 
 All packages use Biome for consistent code quality:
+
 - **Configuration:** `biome.json` at root
 - **Features:**
   - Fast linting across TypeScript/JavaScript
@@ -117,6 +122,7 @@ All packages use Biome for consistent code quality:
   - React-specific rules
 
 **Commands:**
+
 ```bash
 bun run lint      # Lint and fix all packages
 bun run format    # Format all packages
@@ -127,17 +133,20 @@ bun run format    # Format all packages
 The `apps/api/src/services/database.ts` provides a standardized interface:
 
 ### UserService
+
 - `findById(id)` - Get user by ID
 - `findByEmail(email)` - Get user by email
 - `findByUsername(username)` - Get user by username
 
 ### ConversationService
+
 - `getConversationsByUserId(userId)` - List user's conversations
 - `getConversationById(id)` - Get specific conversation
 - `createConversation(userId, id)` - Create new conversation
 - `deleteConversation(id)` - Delete conversation
 
 ### MessageService
+
 - `getMessagesByConversationId(conversationId)` - Get messages in conversation
 - `createMessage(messageData)` - Add new message
 - `getCrisisMessages(userId)` - Get user's crisis messages
@@ -145,10 +154,12 @@ The `apps/api/src/services/database.ts` provides a standardized interface:
 ## Middleware
 
 ### Error Handling
+
 - `errorHandler` - Express error middleware with status codes
 - `asyncHandler` - Wraps route handlers to catch promises
 
 ### Authentication
+
 - `authenticateToken` - JWT verification middleware
 - Extracts user from token and attaches to request
 
@@ -168,6 +179,7 @@ bun run clean        # Clean artifacts and node_modules
 ### Turbo Pipeline
 
 Configuration in `turbo.json`:
+
 - `build` - Depends on `^build` (deps must build first)
 - `dev` - No caching, runs persistently
 - `lint` - Depends on `^lint`

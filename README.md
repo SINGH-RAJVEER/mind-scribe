@@ -2,7 +2,7 @@
 
 MindScribe is your friendly AI-assisted chat companion dedicated to mental well-being, built with a modern Turborepo monorepo architecture featuring full TypeScript support and shared packages.
 
-## Architecture 🏗️
+## Architecture
 
 This project follows a clean monorepo architecture with:
 
@@ -10,14 +10,6 @@ This project follows a clean monorepo architecture with:
 - **apps/web**: React frontend application
 - **packages/types**: Shared TypeScript types
 - **packages/database**: Database models and connection logic
-
-## What's New? 🎉
-
-- ✅ **Turborepo Monorepo**: Efficient build orchestration and caching
-- ✅ **Full TypeScript**: End-to-end type safety across all packages
-- ✅ **Shared Packages**: Reusable types and database logic
-- ✅ **Clean Architecture**: Separation of concerns with dedicated packages
-- ✅ **Enhanced Developer Experience**: Faster builds and better IDE support
 
 ## Features
 
@@ -33,7 +25,8 @@ This project follows a clean monorepo architecture with:
 - Express.js with TypeScript
 - MongoDB with Mongoose
 - JWT Authentication
-- Ollama for LLM integration
+- LiteLLM SDK for LLM inference with streaming support
+- Server-Sent Events (SSE) for response streaming
 
 ### Frontend
 
@@ -52,9 +45,9 @@ This project follows a clean monorepo architecture with:
 
 ### Prerequisites
 
-- Node.js 18+ and npm
+- Node.js 18+ and bun (package manager)
 - MongoDB running locally
-- Ollama (will be auto-installed if not present)
+- LiteLLM proxy server (or compatible LLM endpoint like Ollama, OpenAI, etc.)
 
 ### Setup Steps
 
@@ -68,7 +61,7 @@ This project follows a clean monorepo architecture with:
 2. **Install dependencies:**
 
    ```bash
-   npm install
+   bun install
    ```
 
 3. **Start MongoDB server:**
@@ -89,20 +82,50 @@ This project follows a clean monorepo architecture with:
    Create `.env` file in `apps/api/`:
 
    ```env
-   MODEL_API_URL=http://localhost:11434/api/generate
-   SELECTED_MODEL=llama3.2:3b
+   # LiteLLM Configuration
+   # Base URL for LLM endpoint (compatible with OpenAI API)
+   LLM_BASE_URL=http://localhost:8000/v1
+
+   # Model name (e.g., gpt-3.5-turbo, llama2, etc.)
+   LLM_MODEL=gpt-3.5-turbo
+
+   # API Key (if required by your provider)
+   LLM_API_KEY=your-api-key-here
+
+   # Optional: Database URL
+   MONGODB_URI=mongodb://localhost:27017/mindscribe
+   ```
+
+   **Note:** The `LLM_BASE_URL` should point to a LiteLLM proxy server or OpenAI-compatible endpoint.
+
+   ### Setting up LiteLLM Proxy (Optional)
+
+   If running locally with Ollama or other providers:
+
+   ```bash
+   # Install LiteLLM
+   pip install litellm
+
+   # Start LiteLLM proxy server (pointing to Ollama)
+   litellm --model ollama/llama2 --api_base http://localhost:11434
+   ```
+
+   Or for OpenAI:
+
+   ```bash
+   litellm --model gpt-3.5-turbo --api_key sk-your-key
    ```
 
 5. **Build the project:**
 
    ```bash
-   npm run build
+   bun run build
    ```
 
 6. **Start development servers:**
 
    ```bash
-   npm run dev
+   bun run dev
    ```
 
    This will start:
@@ -113,26 +136,26 @@ This project follows a clean monorepo architecture with:
 
 ### Root Level
 
-- `npm run dev` - Start all packages in development mode
-- `npm run build` - Build all packages
-- `npm run lint` - Lint all packages
-- `npm run type-check` - Type check all packages
-- `npm run clean` - Clean build artifacts
+- `bun run dev` - Start all packages in development mode
+- `bun run build` - Build all packages
+- `bun run lint` - Lint all packages
+- `bun run type-check` - Type check all packages
+- `bun run clean` - Clean build artifacts
 
 ### Individual Packages
 
 ```bash
 # API (backend) only
-npm run dev --workspace=@mindscribe/api
-npm run build --workspace=@mindscribe/api
+bun run dev --workspace=@mindscribe/api
+bun run build --workspace=@mindscribe/api
 
 # Web (frontend) only
-npm run dev --workspace=@mindscribe/web
-npm run build --workspace=@mindscribe/web
+bun run dev --workspace=@mindscribe/web
+bun run build --workspace=@mindscribe/web
 
 # Build shared packages
-npm run build --workspace=@mindscribe/types
-npm run build --workspace=@mindscribe/database
+bun run build --workspace=@mindscribe/types
+bun run build --workspace=@mindscribe/database
 ```
 
 ## Project Structure
@@ -190,19 +213,6 @@ mind-scribe/
 ## Usage
 
 When you run the application, you'll be greeted by a warm, inviting chat interface. Simply type your thoughts to initiate the discussion.
-
-## Contributing
-
-MindScribe is an open-source project built with a modern tech stack:
-
-- **Node.js** and **Express** with **TypeScript** for the backend API
-- **React** with **TypeScript**, **Tailwind CSS**, and **Shadcn UI** for a fast, responsive, and modern frontend
-- **Turborepo** for efficient monorepo management
-- **MongoDB** as the lightweight NOSQL database
-- **Ollama** for AI model integration
-- **Authentication** is implemented using **bcrypt** for password hashing, **JWT** for token-based authentication, and **express-validator** for input validation
-
-We believe in the power of community and warmly welcome contributions from developers of all backgrounds. Every contribution helps us enhance our compassionate support system and make a positive impact together.
 
 ## License
 
