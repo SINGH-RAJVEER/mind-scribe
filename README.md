@@ -2,6 +2,8 @@
 
 MindScribe is your friendly AI-assisted chat companion dedicated to mental well-being, built with a modern Turborepo monorepo architecture featuring full TypeScript support and shared packages.
 
+The web frontend is implemented with React and Vite.
+
 ## Features
 
 - **Instant Support:** Get quick responses with warm and empathetic advice.
